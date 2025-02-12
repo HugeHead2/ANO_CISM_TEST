@@ -1,0 +1,15 @@
+from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
+from sqlalchemy.orm import DeclarativeBase
+from tasks.utils import get_connection_string
+
+engine = create_async_engine(get_connection_string(), isolation_level="READ COMMITED")
+async_session_maker = async_sessionmaker(engine, expire_on_commit=False)
+
+
+class Base(DeclarativeBase):
+    pass
+
+
+async def get_async_session():
+    async with async_session_maker() as session:
+        yield session
