@@ -51,6 +51,21 @@ services:
     volumes:
       - ./:/app/
 
+
+  start_worker:
+    build:
+      context: .
+      dockerfile: dockerfile
+      args:
+        - BUILD=development
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./.env
+    command: poetry run python start_worker.py
+    volumes:
+      - ./:/app/
+
   tests:
     build:
       context: .
